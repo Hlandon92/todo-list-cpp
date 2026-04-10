@@ -2,8 +2,8 @@
 //  main.cpp
 //  Project 1
 //
-//  Created by landon hillborn on 4/10/26.
-//
+//  Created by landon hillborn on 4/08/26.
+//  description: Task manager, allowes adding, deleting, and changing statuses of tasks
 
 #include <iostream>
 #include <vector>
@@ -82,48 +82,105 @@ void updateStatus() {
     int index;
     int choice;
     
-    viewTasks();
-    
-    cout << "select task number: ";
-    cin >> index;
-    
-    if (index < 1 || index > tasks.size())
+    if (tasks.empty())
     {
-        cout << "Invalid selection.\n";
+        cout << "No tasks found.\n";
         return;
     }
-    
-    cout << "1. Pending\n2. In Progress\n3. Done\nChoose status: ";
-    cin >> choice;
-    
-    switch (choice)
+    else
     {
-        case 1: tasks[index - 1].status = "Pending"; break;
-        case 2: tasks[index - 1].status = "In Progress"; break;
-        case 3: tasks[index - 1].status = "Done"; break;
-        default: cout << "Invalid choice.\n"; return;
+        viewTasks();
+        
+        cout << "select task number: ";
+        cin >> index;
+        
+        if (index < 1 || index > tasks.size())
+        {
+            cout << "Invalid selection.\n";
+            return;
+        }
+        
+        cout << "1. Pending\n2. In Progress\n3. Done\nChoose status: ";
+        cin >> choice;
+        
+        switch (choice)
+        {
+            case 1: tasks[index - 1].status = "Pending"; break;
+            case 2: tasks[index - 1].status = "In Progress"; break;
+            case 3: tasks[index - 1].status = "Done"; break;
+            default:
+                cout << "Invalid choice.\n";
+                return;
+        }
+        
+        cout << "Status updated!\n";
     }
-    
-    cout << "Status updated!\n";
 }
 
     // Delete task
 void deleteTask() {
     int index;
         
-    viewTasks();
-    cout << "Enter task number to delete: ";
-    cin >> index;
-        
-    if (index < 1 || index > tasks.size())
+    if (tasks.empty())
     {
-        cout << "Invalid task number.\n";
+        cout << "No tasks found.\n";
         return;
     }
+    else
+    {
+        viewTasks();
         
-    tasks.erase(tasks.begin() + index - 1);
-    cout << "Task deleted!\n";
+        cout << "Enter task number to delete: ";
+        cin >> index;
+        
+        if (index < 1 || index > tasks.size())
+        {
+            cout << "Invalid task number.\n";
+            return;
+        }
+        
+        tasks.erase(tasks.begin() + index - 1);
+        cout << "Task deleted!\n";
+    }
+}
 
+void deleteAllTasks() {
+    char confirm;
+    
+    if (tasks.empty())
+    {
+        cout << "No tasks found.\n";
+        return;
+    }
+    else
+    {
+        viewTasks();
+        
+        cout << "Are you sure you want to delete ALL tasks? (y/n): ";
+        cin >> confirm;
+        
+        while (true)
+        {
+            if (confirm == 'y' || confirm == 'Y')
+            {
+                tasks.clear();
+                cout << "All tasks deleted!\n";
+                break;
+                return;
+            }
+            else if (confirm == 'n' || confirm == 'N')
+            {
+                cout << "Cancelled.";
+                break;
+                return;
+            }
+            else
+            {
+                cout << "Invalid input. (y/n): ";
+                cin >> confirm;
+            }
+        }
+    }
 }
 
 int main() {
@@ -134,9 +191,10 @@ int main() {
         cout << "\n   T0-DO LIST   \n";
         cout << "1. view Tasks\n";
         cout << "2. Add Task\n";
-        cout << "3. Update Task\n";
+        cout << "3. Update Task status\n";
         cout << "4. Delete Task\n";
-        cout << "5. Exit\n";
+        cout << "5. Delete ALL Tasks!\n";
+        cout << "6. Exit\n";
         cout << "Choose: ";
         cin >> choice;
         
@@ -146,10 +204,14 @@ int main() {
             case 2: addTask(); break;
             case 3: updateStatus(); break;
             case 4: deleteTask(); break;
-            case 5: saveTasks(); cout << "GoodBye!\n"; break;
-            default: cout << "Invalid option.\n";
+            case 5: deleteAllTasks(); break;
+            case 6: saveTasks();
+                cout << "GoodBye!\n";
+                break;
+            default:
+                cout << "Invalid option. (1-6)\n";
         }
-    }  while (choice != 5);
+    }  while (choice != 6);
     
     return 0;
 }
