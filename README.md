@@ -1,2 +1,13 @@
 # todo-list-cpp
-a way to organize tasks allowing you to delete, add, and determine status of tasks.
+
+A simple command-line task manager built in C++
+
+## features
+- Add task
+- Delete task
+- Update status
+- Save tasks to file
+
+## how to run
+g++ main.cpp -o todo
+./todo
