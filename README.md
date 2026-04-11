@@ -8,3 +8,7 @@ A simple command-line task manager built in C++
 - delete ALL tasks
 - Update status
 - Save tasks to file
+
+## how to run
+- g++ main.cpp -o todo
+- ./todo
