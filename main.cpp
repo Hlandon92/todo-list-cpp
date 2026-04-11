@@ -12,6 +12,7 @@
 using namespace std;
 
 struct Task {
+    
     string title;
     string status; //Pending, In progress, Done
     string deadline; // e.g. 2026-04-15
@@ -21,6 +22,7 @@ vector<Task> tasks;
 
 // Load tasks
 void loadTasks() {
+    
     ifstream file("/Users/mrworldwide/Library/Mobile Documents/com~apple~TextEdit/Documents/tasks.txt");
     Task t;
     while (getline(file, t.title))
@@ -33,6 +35,7 @@ void loadTasks() {
 }
 // Save tasks
 void saveTasks() {
+    
     ofstream file("/Users/mrworldwide/Library/Mobile Documents/com~apple~TextEdit/Documents/tasks.txt");
     for (const Task& t: tasks)
     {
@@ -45,7 +48,8 @@ void saveTasks() {
 
 // View tasks
 void viewTasks() {
-    if (tasks.empty())
+    
+    if (tasks.empty()) // Checks if file is empty
     {
         cout << "No tasks available.\n";
         return;
@@ -62,6 +66,7 @@ void viewTasks() {
 
 // Add task
 void addTask() {
+    
     Task t;
     cin.ignore();
     
@@ -79,10 +84,11 @@ void addTask() {
 
 // Update status
 void updateStatus() {
+    
     int index;
     int choice;
     
-    if (tasks.empty())
+    if (tasks.empty()) // Checks if file is empty
     {
         cout << "No tasks found.\n";
         return;
@@ -94,6 +100,14 @@ void updateStatus() {
         cout << "select task number: ";
         cin >> index;
         
+        if (cin.fail()) // Checks for error
+        {
+            cin.clear(); // Resets
+            cin.ignore(1000, '\n'); // Discards invalid input
+            cout << "Invalid input.\n";
+            return; // Back to menu
+        }
+        
         if (index < 1 || index > tasks.size())
         {
             cout << "Invalid selection.\n";
@@ -103,6 +117,15 @@ void updateStatus() {
         cout << "1. Pending\n2. In Progress\n3. Done\nChoose status: ";
         cin >> choice;
         
+        if (cin.fail()) // Checks for error
+        {
+            cin.clear(); // Resets
+            cin.ignore(1000, '\n'); // Discards invalid input
+            cout << "Invalid input.\n";
+            return; // Back to menu
+        }
+        
+        // status options
         switch (choice)
         {
             case 1: tasks[index - 1].status = "Pending"; break;
@@ -119,9 +142,10 @@ void updateStatus() {
 
     // Delete task
 void deleteTask() {
+    
     int index;
-        
-    if (tasks.empty())
+     
+    if (tasks.empty()) // Checks if file is empty
     {
         cout << "No tasks found.\n";
         return;
@@ -133,21 +157,30 @@ void deleteTask() {
         cout << "Enter task number to delete: ";
         cin >> index;
         
-        if (index < 1 || index > tasks.size())
+        if (cin.fail()) // Checks for error
+        {
+            cin.clear(); // Resets
+            cin.ignore(1000, '\n'); // Discards invalid input
+            cout << "Invalid input.\n";
+            return; // Back to menu
+        }
+        
+        if (index < 1 || index > tasks.size()) // Checks input
         {
             cout << "Invalid task number.\n";
             return;
         }
         
-        tasks.erase(tasks.begin() + index - 1);
+        tasks.erase(tasks.begin() + index - 1); // Deletes selected task
         cout << "Task deleted!\n";
     }
 }
 
 void deleteAllTasks() {
+    
     char confirm;
     
-    if (tasks.empty())
+    if (tasks.empty()) // Checks if file is empty
     {
         cout << "No tasks found.\n";
         return;
@@ -161,16 +194,16 @@ void deleteAllTasks() {
         
         while (true)
         {
-            if (confirm == 'y' || confirm == 'Y')
+            if (confirm == 'y' || confirm == 'Y') // Deletes all
             {
                 tasks.clear();
                 cout << "All tasks deleted!\n";
                 break;
                 return;
             }
-            else if (confirm == 'n' || confirm == 'N')
+            else if (confirm == 'n' || confirm == 'N') // Cancels
             {
-                cout << "Cancelled.";
+                cout << "Cancelled.\n";
                 break;
                 return;
             }
@@ -184,6 +217,7 @@ void deleteAllTasks() {
 }
 
 int main() {
+    
     int choice;
     loadTasks();
     
@@ -198,6 +232,15 @@ int main() {
         cout << "Choose: ";
         cin >> choice;
         
+        if (cin.fail()) // Checks for error
+        {
+            cin.clear(); // Resets
+            cin.ignore(1000, '\n'); // Discards invalid input
+            cout << "Invalid input.\n";
+            continue; // Back to menu
+        }
+        
+        // operation options
         switch (choice)
         {
             case 1: viewTasks(); break;
@@ -206,7 +249,7 @@ int main() {
             case 4: deleteTask(); break;
             case 5: deleteAllTasks(); break;
             case 6: saveTasks();
-                cout << "GoodBye!\n";
+                cout << "Tasks saved. GoodBye!\n";
                 break;
             default:
                 cout << "Invalid option. (1-6)\n";
